@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'shary-carrental'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EBDEEFD93A4147668D3AAD61606BE831 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5E0190A902C04E39958E6100E848020D }}
           package: '*.jar'
