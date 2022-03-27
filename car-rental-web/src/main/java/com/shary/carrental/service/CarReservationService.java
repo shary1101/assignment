@@ -56,7 +56,10 @@ public class CarReservationService {
 
     public Result addReservation(AddReservationRequest request) {
         Result result = null;
-        validAddReservationRequest(request);
+        String msg = validAddReservationRequest(request);
+        if (msg != null) {
+            return new Result(StatusEnum.FAIL.getCode(), msg, null);
+        }
         long modelId = request.getModelId();
         Date fromDate = request.getFromDate();
         Date toDate = request.getToDate();
@@ -97,20 +100,20 @@ public class CarReservationService {
         return carReservation;
     }
 
-    private void validAddReservationRequest(AddReservationRequest request) throws IllegalArgumentException {
-        String msg = null;
+    private String validAddReservationRequest(AddReservationRequest request) throws IllegalArgumentException {
         if (request.getModelId() == null) {
-            throw new IllegalArgumentException("'modelId' is not provided");
+            return "'modelId' is not provided";
         }
         if (request.getFromDate() == null) {
-            throw new IllegalArgumentException("'fromDate' is not provided");
+            return "'fromDate' is not provided";
         }
         if (request.getToDate() == null) {
-            throw new IllegalArgumentException("'toDate' is not provided");
+            return "'toDate' is not provided";
         }
         if (request.getFromDate().compareTo(request.getToDate()) > 0) {
-            throw new IllegalArgumentException("The input param 'fromDate' should be no later than 'toDate'.");
+            return "The input param 'fromDate' should be no later than 'toDate'.";
         }
+        return null;
     }
 
 }

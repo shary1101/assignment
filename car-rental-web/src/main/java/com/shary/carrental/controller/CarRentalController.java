@@ -55,8 +55,6 @@ public class CarRentalController {
         Result result = null;
         try {
             result = carReservationService.addReservation(request);
-        } catch (IllegalArgumentException ie) {
-            return new Result<>(StatusEnum.FAIL.getCode(), ie.getMessage(), null);
         } catch (Exception e) {
             return new Result<>(StatusEnum.INTERNAL_SERVER_ERROR.getCode(), "Internal Server Error", null);
         }
