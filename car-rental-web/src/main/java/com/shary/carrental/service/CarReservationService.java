@@ -25,13 +25,13 @@ public class CarReservationService {
     private CarReservationRepository carReservationRepository;
 
 
-    public Result getAvailableModels(Date fromDate, Date toDate) {
+    public Result<AvailableModelsResponse> getAvailableModels(Date fromDate, Date toDate) {
 
         if (fromDate.compareTo(toDate) > 0) {
-            return new Result(StatusEnum.FAIL.getStatus(), "The input param 'fromDate' should be no later than 'toDate'.", null);
+            return new Result(StatusEnum.FAIL.getCode(), "The input param 'fromDate' should be no later than 'toDate'.", null);
         }
         List<AvailableModel> availableModels = null;
-        // find car reservations already reserved within given time slot
+        // find car reservations already reserved within the target period
         List<CarReservation> reserved = carReservationRepository.findOverlappedReservations(fromDate, toDate);
         // group reserved cars by model id and calculate count for each
         Map<Long, Long> reservedNum = reserved.stream().
@@ -44,30 +44,28 @@ public class CarReservationService {
                         && reservedNum.get(carStock.getId()) == carStock.getStock())).
                 map(carStock -> {
                     AvailableModel availableModel = new AvailableModel();
+                    availableModel.setModelId(carStock.getId());
                     availableModel.setModelName(carStock.getModelName());
                     int numLeft = !reservedNum.containsKey(carStock.getId())? carStock.getStock(): carStock.getStock() - reservedNum.get(carStock.getId()).intValue();
                     availableModel.setNumLeft(numLeft);
                     return availableModel;
                 }).collect(Collectors.toList());
 
-        return new Result(StatusEnum.SUCCESS.getStatus(), null, new AvailableModelsResponse(availableModels));
+        return new Result(StatusEnum.SUCCESS.getCode(), null, new AvailableModelsResponse(availableModels));
     }
 
     public Result addReservation(AddReservationRequest request) {
-
         Result result = null;
+        validAddReservationRequest(request);
         long modelId = request.getModelId();
         Date fromDate = request.getFromDate();
         Date toDate = request.getToDate();
-        if (fromDate.compareTo(toDate) > 0) {
-            return new Result(StatusEnum.FAIL.getStatus(), "The input param 'fromDate' should be no later than 'toDate'.", null);
-        }
 
         CarReservation carReservation = populateCarReservation(modelId, fromDate, toDate);
 
         Optional<CarStock> carStock = carStockRepository.findById(modelId);
         if (!carStock.isPresent()) {
-             return new Result(StatusEnum.FAIL.getStatus(), "This car model is not provided in our company.", null);
+             return new Result(StatusEnum.FAIL.getCode(), "This car model is not provided in our company.", null);
         }
 
         int stock = carStock.get().getStock();
@@ -80,10 +78,10 @@ public class CarReservationService {
                 // has stock, save the record into DB
                 CarReservation newReservation = carReservationRepository.save(carReservation);
 
-                result = newReservation == null? new Result(StatusEnum.FAIL.getStatus(), "Reservation Failed.", null)
-                        : new Result(StatusEnum.SUCCESS.getStatus(), "Reservation is successful.", null);
+                result = newReservation == null? new Result(StatusEnum.FAIL.getCode(), "Reservation Failed.", null)
+                        : new Result(StatusEnum.SUCCESS.getCode(), "Reservation is successful.", null);
             } else {
-                result = new Result(StatusEnum.FAIL.getStatus(), "This car model is not available in this time slot.", null);
+                result = new Result(StatusEnum.FAIL.getCode(), "This car model is not available in this time slot.", null);
             }
         }
         
@@ -97,6 +95,22 @@ public class CarReservationService {
         carReservation.setToDate(toDate);
 
         return carReservation;
+    }
+
+    private void validAddReservationRequest(AddReservationRequest request) throws IllegalArgumentException {
+        String msg = null;
+        if (request.getModelId() == null) {
+            throw new IllegalArgumentException("'modelId' is not provided");
+        }
+        if (request.getFromDate() == null) {
+            throw new IllegalArgumentException("'fromDate' is not provided");
+        }
+        if (request.getToDate() == null) {
+            throw new IllegalArgumentException("'toDate' is not provided");
+        }
+        if (request.getFromDate().compareTo(request.getToDate()) > 0) {
+            throw new IllegalArgumentException("The input param 'fromDate' should be no later than 'toDate'.");
+        }
     }
 
 }

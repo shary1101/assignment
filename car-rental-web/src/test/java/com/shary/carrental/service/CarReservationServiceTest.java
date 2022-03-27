@@ -32,7 +32,7 @@ class CarReservationServiceTest {
             Date toDate = format.parse("2022-03-26");
             response = carReservationService.getAvailableModels(fromDate, toDate);
         } catch (Exception e) {}
-        assertEquals(StatusEnum.FAIL.getStatus(), response.getStatus());
+        assertEquals(StatusEnum.FAIL.getCode(), response.getCode());
         assertEquals("The input param 'fromDate' should be no later than 'toDate'.", response.getMessage());
     }
 
@@ -43,12 +43,12 @@ class CarReservationServiceTest {
         try {
             Date fromDate = format.parse("2022-03-27");
             Date toDate = format.parse("2022-03-26");
-            request.setModelId(1);
+            request.setModelId(1L);
             request.setFromDate(fromDate);
             request.setToDate(toDate);
         } catch (Exception e) {}
         Result response = carReservationService.addReservation(request);
-        assertEquals(StatusEnum.FAIL.getStatus(), response.getStatus());
+        assertEquals(StatusEnum.FAIL.getCode(), response.getCode());
         assertEquals("The input param 'fromDate' should be no later than 'toDate'.", response.getMessage());
     }
 }

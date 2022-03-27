@@ -29,7 +29,7 @@ public class CarRentalController {
 //        return "Congrats! Your app is deployed successfully in Azure!";
 //    }
 
-    @ApiOperation(value="get all available models within given time slot",notes="Note: please do not include double quote around the value for 'fromDate' and 'toDate'. Example url: https://shary-carrental.azurewebsites.net/availableModels?fromDate=2022-03-25&toDate=2022-03-26")
+    @ApiOperation(value="get all available models within given target period",notes="Note: please do not include double quote around the value for 'fromDate' and 'toDate'. Example url: https://shary-carrental.azurewebsites.net/availableModels?fromDate=2022-03-25&toDate=2022-03-26")
     @GetMapping("/availableModels")
     public Result<AvailableModelsResponse> queryAvailableModels(
             @ApiParam(name="fromDate",value="yyyy-MM-dd",required=true)
@@ -42,8 +42,7 @@ public class CarRentalController {
         try {
             result = carReservationService.getAvailableModels(fromDate, toDate);
         } catch(Exception e) {
-            e.printStackTrace();
-            return new Result<>(StatusEnum.FAIL.getStatus(), "Internal Server Error", null);
+            return new Result<>(StatusEnum.INTERNAL_SERVER_ERROR.getCode(), "Internal Server Error", null);
         }
 
         return result;
@@ -56,8 +55,10 @@ public class CarRentalController {
         Result result = null;
         try {
             result = carReservationService.addReservation(request);
+        } catch (IllegalArgumentException ie) {
+            return new Result<>(StatusEnum.FAIL.getCode(), ie.getMessage(), null);
         } catch (Exception e) {
-            return new Result<>(StatusEnum.FAIL.getStatus(), "Internal Server Error: " + e.getMessage(), null);
+            return new Result<>(StatusEnum.INTERNAL_SERVER_ERROR.getCode(), "Internal Server Error", null);
         }
 
         return result;

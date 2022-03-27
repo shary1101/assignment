@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AvailableModel {
+    Long modelId;
     String modelName;
     int numLeft;
 }

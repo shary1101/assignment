@@ -1,15 +1,14 @@
 package com.shary.carrental.common;
 
 public enum StatusEnum {
-    FAIL("fail"), SUCCESS("success");
+    SUCCESS(200), FAIL(400), INTERNAL_SERVER_ERROR(500);
 
-    String status;
-
-    StatusEnum(String status) {
-        this.status = status;
+    public int code;
+    StatusEnum(int code) {
+        this.code = code;
     }
 
-    public String getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 }
