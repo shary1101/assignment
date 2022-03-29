@@ -10,5 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AvailableModelsResponse {
-    List<AvailableModel> availableModels;
+    private List<AvailableModel> availableModels;
 }
