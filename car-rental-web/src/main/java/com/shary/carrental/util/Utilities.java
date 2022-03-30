@@ -2,6 +2,12 @@ package com.shary.carrental.util;
 
 import java.util.Date;
 
+/**
+ * Utilities for car rental services
+ *
+ * @author shary
+ *
+ */
 public class Utilities {
     private Utilities() {
     }

@@ -1,12 +1,17 @@
 package com.shary.carrental.dao;
 
-import com.shary.carrental.dao.CarReservation;
+import com.shary.carrental.domain.CarReservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The JPA repository for {@link CarReservation} entities.
+ *
+ * @author shary
+ */
 public interface CarReservationRepository extends JpaRepository<CarReservation, Long> {
 
     @Query(value="select * from car_reservation " +

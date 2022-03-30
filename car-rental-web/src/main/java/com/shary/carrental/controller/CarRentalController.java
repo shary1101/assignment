@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
+/**
+ * All operations with a car rental will be routed by this controller.
+ *
+ */
 @Api(value="CarRentalController",tags={"car rental interface"})
 @RestController
 @RequestMapping("/cars")

@@ -1,4 +1,4 @@
-package com.shary.carrental.dao;
+package com.shary.carrental.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -11,12 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+/**
+ * This entity represents the stock number for a car model
+ *
+ */
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 @Entity
 @Table
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class CarStock implements Serializable {
     @Id
     @GeneratedValue

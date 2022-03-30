@@ -6,6 +6,12 @@ import com.shary.carrental.dto.Result;
 
 import java.util.Date;
 
+/**
+ * Service that handles car reservations related calls using domain services
+ *
+ * @author shary
+ *
+ */
 public interface CarReservationService {
 
     Result<AvailableModelsResponse> getAvailableModels(Date fromDate, Date toDate);
