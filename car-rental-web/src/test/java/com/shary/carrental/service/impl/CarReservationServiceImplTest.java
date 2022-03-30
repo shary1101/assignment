@@ -2,9 +2,9 @@ package com.shary.carrental.service.impl;
 
 import com.shary.carrental.CarRentalApplication;
 import com.shary.carrental.common.StatusEnum;
-import com.shary.carrental.dao.CarReservation;
+import com.shary.carrental.domain.CarReservation;
 import com.shary.carrental.dao.CarReservationRepository;
-import com.shary.carrental.dao.CarStock;
+import com.shary.carrental.domain.CarStock;
 import com.shary.carrental.dao.CarStockRepository;
 import com.shary.carrental.dto.AddReservationRequest;
 import com.shary.carrental.dto.AvailableModel;

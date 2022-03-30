@@ -8,9 +8,15 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * Reservation data transfer object used to add a car reservation to endpoints
+ *
+ * @author shary
+ *
+ */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value="AddReservationRequest",description="to reserve a car model for a period of time")
 public class AddReservationRequest {
     @ApiModelProperty(value="modelId",name="long value",example="1",required=true)
