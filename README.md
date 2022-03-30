@@ -12,7 +12,7 @@ For simplicity, we make the following assumptions:
 
 # API Specs
 
-### GET /availableModels 
+### GET cars/availability 
 get all available models within the target period
 
 Request parameters: input the target period. 
@@ -62,7 +62,7 @@ Response JSON: return the response status and a list of models available during 
     * numLeft
       * (int) how many cars are left available within this period; ***This number should be greater than 0, since by definition, only available models will be returned;***
 
-### POST /reserve
+### POST cars/reservation
 add a car reservation
 
 Request JSON: input the user id, the target model and the target period.
